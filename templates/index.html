@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>formulario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+
+</head>
+<body>
+    <h1>Formulario</h1>
+    <form action="/usuarios" method="post">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre"><br><br>
+        
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido"><br><br>
+
+        <label for="direccion">Direccion:</label>
+        <input type="text" id="direccion" name="direccion"><br><br>
+
+        <label for="telefono">Telefono:</label>
+        <input type="text" id="telefono" name="telefono"><br><br>
+        
+        <label for="correo">Correo:</label>
+        <input type="correo" id="correo" name="correo"><br><br>
+
+        <label for="mensaje">Mensaje:</label>
+        <input type="text" id="mensaje" name="mensaje"><br><br>
+
+        
+        <input type="submit" value="Enviar">
+    </form>
+    
+</body>
+</html>
