@@ -1,36 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>formulario</title>
+    <title>Formulario</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
-
 </head>
 <body>
-    <h1>Formulario</h1>
-    <form action="/usuarios" method="post">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre"><br><br>
-        
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido"><br><br>
+    <div class="container">
+        <h2>Contacto</h2>
+        <form action="/usuarios" method="post" class="form">
+            <label for="nombre">Nombre
+                <input type="text" id="nombre" name="nombre" required>
+            </label>
 
-        <label for="direccion">Direccion:</label>
-        <input type="text" id="direccion" name="direccion"><br><br>
+            <label for="apellido">Apellido
+                <input type="text" id="apellido" name="apellido" required>
+            </label>
 
-        <label for="telefono">Telefono:</label>
-        <input type="text" id="telefono" name="telefono"><br><br>
-        
-        <label for="correo">Correo:</label>
-        <input type="correo" id="correo" name="correo"><br><br>
+            <label for="direccion">Dirección
+                <input type="text" id="direccion" name="direccion" required>
+            </label>
 
-        <label for="mensaje">Mensaje:</label>
-        <input type="text" id="mensaje" name="mensaje"><br><br>
+            <label for="telefono">Teléfono
+                <input type="tel" id="telefono" name="telefono" inputmode="tel" required>
+            </label>
 
-        
-        <input type="submit" value="Enviar">
-    </form>
-    
+            <label for="correo">Correo
+                <input type="email" id="correo" name="correo" required>
+            </label>
+
+            <label for="mensaje">Mensaje
+                <textarea id="mensaje" name="mensaje" rows="5"></textarea>
+            </label>
+
+            <button type="submit" class="btn">Enviar</button>
+        </form>
+    </div>
 </body>
 </html>

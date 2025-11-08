@@ -17,10 +17,16 @@ def conexion():
             port=port,
             database=database,
             user=user,
-            password=password
+            password=password,
+            options='-c client_encoding=UTF8'  # forzar codificación cliente UTF-8
         )
+        # Asegurar codificación por si acaso
+        try:
+            conexion.set_client_encoding('UTF8')
+        except Exception:
+            pass
         return conexion
-    except psycopg2.Error as e:
+    except Exception as e:  # capturar Exception porque UnicodeDecodeError puede no ser psycopg2.Error
         print("Error al conectar a la base de datos:", e)
         return None
 @app.route('/')
@@ -29,38 +35,41 @@ def index():
 @app.route('/formulario')
 def formulario():
     return render_template('formulario.html')
-@app.route('/usuarios', methods=['post'])
+@app.route('/usuarios', methods=['POST'])
 def guarda():
-    nombre = request.form['nombre']
-    apellido = request.form['apellido']
-    correo = request.form['correo']
-    telefono = request.form['telefono']
-    direccion = request.form['direccion']
-    mensaje = request.form['mensaje']
+    nombre = request.form.get('nombre', '').strip()
+    apellido = request.form.get('apellido', '').strip()
+    correo = request.form.get('correo', '').strip()
+    telefono = request.form.get('telefono', '').strip()
+    direccion = request.form.get('direccion', '').strip()
+    mensaje = request.form.get('mensaje', '').strip()
     
-    conexion_db = conexion()
+    # validar antes de abrir la conexión
     if not nombre or not apellido or not correo or not telefono or not direccion:
         return "Error: Todos los campos son obligatorios."
+    
+    conexion_db = conexion()
     if conexion_db is None:
         return "Error: No se pudo conectar a la base de datos."
-    conn = conexion()
-
+    
     try:
         cursor = conexion_db.cursor()
         insert_query = """
-            INSERT INTO usuarios (nombre, apellido, correo, telefono, direccion)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO usuarios (nombre, apellido, correo, telefono, direccion, mensaje)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """
-        cursor.execute(insert_query, (nombre, apellido, correo, telefono, direccion))
+        cursor.execute(insert_query, (nombre, apellido, correo, telefono, direccion, mensaje))
         conexion_db.commit()
         cursor.close()
-        return "Usuario guardado exitosamente."
+        return redirect('/')
     except psycopg2.Error as e:
         print("Error al insertar datos:", e)
         return "Error al guardar el usuario."
     finally:
-        conn.close()
-    return redirect('/')
+        try:
+            conexion_db.close()
+        except Exception:
+            pass
 
 if __name__ == '__main__':
     app.run(debug=True)
